@@ -30,6 +30,7 @@ import {
   getMessageImages,
   isVisionModel,
 } from "@/app/utils";
+import { useMaskStore } from "@/app/store/mask";
 
 export interface OpenAIListModelResponse {
   object: string;
@@ -45,38 +46,83 @@ export class ChatGPTApi implements LLMApi {
 
   path(path: string): string {
     const accessStore = useAccessStore.getState();
+    const maskStore = useMaskStore.getState();
+    const chatStore = useChatStore.getState();
+    const session = chatStore.currentSession();
+    // 拿到session后，就可以知道当前面具使用的是什么模型
+    const model = session?.mask?.modelConfig?.model;
+    // 是否是自定义配置组其中一项
+    const isInCustomConfigList = accessStore.multipleCustomConfig.some(
+      (config) => config.customModels === model,
+    );
 
-    const isAzure = accessStore.provider === ServiceProvider.Azure;
+    // 不是自定义的，走历史逻辑
+    if (!isInCustomConfigList) {
+      const isAzure = accessStore.provider === ServiceProvider.Azure;
 
-    if (isAzure && !accessStore.isValidAzure()) {
-      throw Error(
-        "incomplete azure config, please check it in your settings page",
-      );
+      if (isAzure && !accessStore.isValidAzure()) {
+        throw Error(
+          "incomplete azure config, please check it in your settings page",
+        );
+      }
+
+      let baseUrl = isAzure ? accessStore.azureUrl : accessStore.openaiUrl;
+
+      if (baseUrl.length === 0) {
+        const isApp = !!getClientConfig()?.isApp;
+        baseUrl = isApp
+          ? DEFAULT_API_HOST + "/proxy" + ApiPath.OpenAI
+          : ApiPath.OpenAI;
+      }
+
+      if (baseUrl.endsWith("/")) {
+        baseUrl = baseUrl.slice(0, baseUrl.length - 1);
+      }
+      if (!baseUrl.startsWith("http") && !baseUrl.startsWith(ApiPath.OpenAI)) {
+        baseUrl = "https://" + baseUrl;
+      }
+
+      if (isAzure) {
+        path = makeAzurePath(path, accessStore.azureApiVersion);
+      }
+
+      console.log("[Proxy Endpoint] ", baseUrl, path);
+
+      return [baseUrl, path].join("/");
+    } else {
+      const target = accessStore.multipleCustomConfig.find(
+        (config) => config.customModels === model,
+      )!;
+      const isAzure = target.provider === ServiceProvider.Azure;
+      if (isAzure && !accessStore.isValidAzureSpecific(target)) {
+        throw Error(
+          "incomplete azure config, please check it in your settings page",
+        );
+      }
+      let baseUrl = isAzure ? target.azureUrl : target.openaiUrl;
+      console.log("是否是自定义配置组其中一项", isInCustomConfigList, baseUrl);
+      if (baseUrl.length === 0) {
+        const isApp = !!getClientConfig()?.isApp;
+        baseUrl = isApp
+          ? DEFAULT_API_HOST + "/proxy" + ApiPath.OpenAI
+          : ApiPath.OpenAI;
+      }
+
+      if (baseUrl.endsWith("/")) {
+        baseUrl = baseUrl.slice(0, baseUrl.length - 1);
+      }
+      if (!baseUrl.startsWith("http") && !baseUrl.startsWith(ApiPath.OpenAI)) {
+        baseUrl = "https://" + baseUrl;
+      }
+
+      if (isAzure) {
+        path = makeAzurePath(path, target.azureApiVersion);
+      }
+
+      console.log("自定义的[Proxy Endpoint] ", baseUrl, path);
+
+      return [baseUrl, path].join("/");
     }
-
-    let baseUrl = isAzure ? accessStore.azureUrl : accessStore.openaiUrl;
-
-    if (baseUrl.length === 0) {
-      const isApp = !!getClientConfig()?.isApp;
-      baseUrl = isApp
-        ? DEFAULT_API_HOST + "/proxy" + ApiPath.OpenAI
-        : ApiPath.OpenAI;
-    }
-
-    if (baseUrl.endsWith("/")) {
-      baseUrl = baseUrl.slice(0, baseUrl.length - 1);
-    }
-    if (!baseUrl.startsWith("http") && !baseUrl.startsWith(ApiPath.OpenAI)) {
-      baseUrl = "https://" + baseUrl;
-    }
-
-    if (isAzure) {
-      path = makeAzurePath(path, accessStore.azureApiVersion);
-    }
-
-    console.log("[Proxy Endpoint] ", baseUrl, path);
-
-    return [baseUrl, path].join("/");
   }
 
   extractMessage(res: any) {
@@ -229,7 +275,9 @@ export class ChatGPTApi implements LLMApi {
             const text = msg.data;
             try {
               const json = JSON.parse(text);
-              const choices = json.choices as Array<{ delta: { content: string } }>;
+              const choices = json.choices as Array<{
+                delta: { content: string };
+              }>;
               const delta = choices[0]?.delta?.content;
               const textmoderation = json?.prompt_filter_results;
 
@@ -237,9 +285,17 @@ export class ChatGPTApi implements LLMApi {
                 remainText += delta;
               }
 
-              if (textmoderation && textmoderation.length > 0 && ServiceProvider.Azure) {
-                const contentFilterResults = textmoderation[0]?.content_filter_results;
-                console.log(`[${ServiceProvider.Azure}] [Text Moderation] flagged categories result:`, contentFilterResults);
+              if (
+                textmoderation &&
+                textmoderation.length > 0 &&
+                ServiceProvider.Azure
+              ) {
+                const contentFilterResults =
+                  textmoderation[0]?.content_filter_results;
+                console.log(
+                  `[${ServiceProvider.Azure}] [Text Moderation] flagged categories result:`,
+                  contentFilterResults,
+                );
               }
             } catch (e) {
               console.error("[Request] parse error", text, msg);

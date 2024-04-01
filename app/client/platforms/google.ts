@@ -105,6 +105,21 @@ export class GeminiProApi implements LLMApi {
 
     const accessStore = useAccessStore.getState();
     let baseUrl = accessStore.googleUrl;
+    // // google 的api 是特殊处理的
+    // const chatStore = useChatStore.getState();
+    // const session = chatStore.currentSession();
+    // const model = session?.mask?.modelConfig?.model;
+
+    // // 是否是自定义配置组其中一项
+    // const isInCustomConfigList = accessStore.multipleCustomConfig.some((config) => config.customModels === model);
+
+    // if (isInCustomConfigList) {
+    //   const target = accessStore.multipleCustomConfig.find((config) => config.customModels === model)!;
+    //   console.log('what is target', target, target.googleUrl)
+    //   baseUrl = target.googleUrl;
+    // }
+    // console.log('google api 是否是自定义配置组其中一项', isInCustomConfigList, baseUrl)
+
     const isApp = !!getClientConfig()?.isApp;
 
     let shouldStream = !!options.config.stream;

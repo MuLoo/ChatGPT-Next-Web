@@ -69,6 +69,12 @@ export enum ServiceProvider {
   Google = "Google",
 }
 
+// 组合的自定义配置，不能选择google，google是单独的，后续熟悉了，可以考虑将google也允许自定义
+export enum CustomMultipleServiceProvider {
+  OpenAI = "OpenAI",
+  Azure = "Azure",
+}
+
 export enum ModelProvider {
   GPT = "GPT",
   GeminiPro = "GeminiPro",
@@ -99,7 +105,7 @@ You are ChatGPT, a large language model trained by {{ServiceProvider}}.
 Knowledge cutoff: {{cutoff}}
 Current model: {{model}}
 Current time: {{time}}
-Latex inline: $x^2$ 
+Latex inline: $x^2$
 Latex block: $$e=mc^2$$
 `;
 

@@ -11,7 +11,7 @@ import { ensure } from "../utils/clone";
 
 let fetchState = 0; // 0 not fetch, 1 fetching, 2 done
 
-const DEFAULT_OPENAI_URL =
+export const DEFAULT_OPENAI_URL =
   getClientConfig()?.buildMode === "export"
     ? DEFAULT_API_HOST + "/api/proxy/openai"
     : ApiPath.OpenAI;
@@ -19,6 +19,9 @@ const DEFAULT_OPENAI_URL =
 const DEFAULT_ACCESS_STATE = {
   accessCode: "",
   useCustomConfig: false,
+  useMultipleCustomConfig: false,
+  // debug: 添加多组自定义配置
+  multipleCustomConfig: [] as { [key: string]: any }[],
 
   provider: ServiceProvider.OpenAI,
 
@@ -65,6 +68,16 @@ export const useAccessStore = createPersistStore(
 
     isValidGoogle() {
       return ensure(get(), ["googleApiKey"]);
+    },
+
+    isValidGoogleSpecific(details: any) {
+      return ensure(details, ["googleApiKey"]);
+    },
+    isValidAzureSpecific(details: any) {
+      return ensure(details, ["azureUrl", "azureApiKey", "azureApiVersion"]);
+    },
+    isValidOpenAISpecific(details: any) {
+      return ensure(details, ["openaiApiKey"]);
     },
 
     isAuthorized() {
