@@ -651,7 +651,14 @@ export function Settings() {
   }, []);
 
   const clientConfig = useMemo(() => getClientConfig(), []);
+  console.log(
+    "enabledAccessControl ----->",
+    enabledAccessControl,
+    clientConfig?.isApp,
+  );
   const showAccessCode = enabledAccessControl && !clientConfig?.isApp;
+
+  const MultipleCustomEndPointConfig = [];
 
   return (
     <ErrorBoundary>

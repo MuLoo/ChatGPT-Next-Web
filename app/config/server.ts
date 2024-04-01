@@ -39,6 +39,7 @@ declare global {
 
 const ACCESS_CODES = (function getAccessCodes(): Set<string> {
   const code = process.env.CODE;
+  console.log("what is code -----", code);
 
   try {
     const codes = (code?.split(",") ?? [])
