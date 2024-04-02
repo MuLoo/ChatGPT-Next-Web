@@ -748,6 +748,28 @@ function _Chat() {
 
   const doSubmit = (userInput: string) => {
     if (userInput.trim() === "") return;
+    if (!accessStore.isAccessCodeValid())
+      return showToast(
+        <span>
+          访问密码不正确或为空，请前往
+          <a
+            style={{ color: "var(--color-accent-fg)", padding: "0 2px" }}
+            href="/#/auth"
+          >
+            登录
+          </a>
+          页输入正确的访问密码，或者在
+          <a
+            style={{ color: "var(--color-accent-fg)", padding: "0 2px" }}
+            href="/#/settings"
+          >
+            设置
+          </a>
+          页输入正确的访问密码。
+        </span>,
+        undefined,
+        5000,
+      );
     const matchCommand = chatCommands.match(userInput);
     if (matchCommand.matched) {
       setUserInput("");
@@ -929,6 +951,7 @@ function _Chat() {
   const context: RenderMessage[] = useMemo(() => {
     return session.mask.hideContext ? [] : session.mask.context.slice();
   }, [session.mask.context, session.mask.hideContext]);
+
   const accessStore = useAccessStore();
 
   if (

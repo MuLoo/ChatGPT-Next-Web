@@ -16,15 +16,8 @@ export const DEFAULT_OPENAI_URL =
     ? DEFAULT_API_HOST + "/api/proxy/openai"
     : ApiPath.OpenAI;
 
-const DEFAULT_ACCESS_STATE = {
-  accessCode: "",
-  useCustomConfig: false,
-  useMultipleCustomConfig: false,
-  // debug: 添加多组自定义配置
-  multipleCustomConfig: [] as { [key: string]: any }[],
-
+const SomeDefaultState = {
   provider: ServiceProvider.OpenAI,
-
   // openai
   openaiUrl: DEFAULT_OPENAI_URL,
   openaiApiKey: "",
@@ -38,7 +31,18 @@ const DEFAULT_ACCESS_STATE = {
   googleUrl: "",
   googleApiKey: "",
   googleApiVersion: "v1",
+};
 
+const DEFAULT_ACCESS_STATE = {
+  accessCode: "",
+  useCustomConfig: false,
+  useMultipleCustomConfig: false,
+  // 添加多组自定义配置
+  multipleCustomConfig: [] as { [key: string]: any }[],
+  // 随着项目部署时，默认填入的配置
+  defaultInitialConfig: [] as { [key: string]: any }[],
+
+  ...SomeDefaultState,
   // server config
   needCode: true,
   hideUserApiKey: false,
@@ -52,6 +56,66 @@ export const useAccessStore = createPersistStore(
   { ...DEFAULT_ACCESS_STATE },
 
   (set, get) => ({
+    initialize() {
+      // 初始化的时候，写入默认的配置
+      const customDefaultConfig =
+        process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_NUMBER;
+      const arr = Array.from(
+        { length: Number(customDefaultConfig) },
+        (_, index) => index + 1,
+      );
+      // 最多9组。必须显示使用环境变量。不可以动态获取，否则nextjs不会替换
+      const temp: { [key: string | number]: string | undefined } = {
+        1: process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_1,
+        2: process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_2,
+        3: process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_3,
+        4: process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_4,
+        5: process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_5,
+        6: process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_6,
+        7: process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_7,
+        8: process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_8,
+        9: process.env.NEXT_PUBLIC_MULTIPLE_CONFIG_9,
+      };
+      const defaultConfigList = arr
+        .filter((item) => temp[item])
+        .map((item) => {
+          const [provider, url, apiKey, model] = (temp[item] || "").split(
+            ",",
+          ) as [string, string, string, string];
+          const isOpenAi = provider.toLocaleLowerCase() === "openai";
+          return {
+            ...SomeDefaultState,
+            ...{
+              provider,
+              [isOpenAi ? "openaiUrl" : "azureUrl"]: url,
+              [isOpenAi ? "openaiApiKey" : "azureApiKey"]: apiKey,
+              customModels: model,
+            },
+          };
+        });
+      let defaultGlobalConfig = {};
+      if (process.env.NEXT_PUBLIC_DEFAULT_CONFIG) {
+        const [provider, url, apiKey, model] =
+          process.env.NEXT_PUBLIC_DEFAULT_CONFIG.split(",") as [
+            string,
+            string,
+            string,
+            string,
+          ];
+        const isOpenAi = provider.toLocaleLowerCase() === "openai";
+        defaultGlobalConfig = {
+          provider,
+          [isOpenAi ? "openaiUrl" : "azureUrl"]: url,
+          [isOpenAi ? "openaiApiKey" : "azureApiKey"]: apiKey,
+          customModels: model,
+        };
+      }
+      set((partial) => ({
+        ...partial,
+        ...defaultGlobalConfig,
+        defaultInitialConfig: defaultConfigList,
+      }));
+    },
     enabledAccessControl() {
       this.fetch();
 
@@ -80,10 +144,17 @@ export const useAccessStore = createPersistStore(
       return ensure(details, ["openaiApiKey"]);
     },
 
-    isAuthorized() {
-      this.fetch();
+    isAccessCodeValid() {
+      console.log(
+        "isAccessCodeValid",
+        get().accessCode,
+        process.env.NEXT_PUBLIC_CODE,
+      );
+      return get().accessCode === process.env.NEXT_PUBLIC_CODE;
+    },
 
-      // has token or has code or disabled access control
+    isAuthorized() {
+      this.fetch(); // has token or has code or disabled access control
       return (
         this.isValidOpenAI() ||
         this.isValidAzure() ||

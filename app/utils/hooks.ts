@@ -12,12 +12,14 @@ export function useAllModels() {
         configStore.customModels,
         accessStore.customModels,
         accessStore.multipleCustomConfig.map((item) => item.customModels),
+        accessStore.defaultInitialConfig.map((item) => item.customModels),
       ].join(","),
     );
   }, [
     accessStore.customModels,
     configStore.customModels,
     accessStore.multipleCustomConfig,
+    accessStore.defaultInitialConfig,
     configStore.models,
   ]);
 
