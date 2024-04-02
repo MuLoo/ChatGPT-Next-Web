@@ -4,9 +4,8 @@
   "license": "mit",
   "scripts": {
     "dev": "next dev --port=3456",
-    "build:local": "next build",
     "build": "cross-env BUILD_MODE=standalone next build",
-    "start": "next start",
+    "start": "next start -p 6789",
     "lint": "next lint",
     "export": "cross-env BUILD_MODE=export BUILD_APP=1 next build",
     "export:dev": "cross-env BUILD_MODE=export BUILD_APP=1 next dev",
