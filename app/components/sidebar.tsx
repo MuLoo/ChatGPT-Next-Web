@@ -30,6 +30,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { isIOS, useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
 import { showConfirm, showToast } from "./ui-lib";
+import { Mask, useMaskStore } from "../store/mask";
+import { MaskAvatar } from "./mask";
+
+export function MaskItem(props: { mask: Mask; onClick?: () => void }) {
+  return (
+    <div className={styles["mask"]} onClick={props.onClick}>
+      <MaskAvatar
+        avatar={props.mask.avatar}
+        model={props.mask.modelConfig.model}
+      />
+      <div className={styles["mask-name"] + " one-line"}>{props.mask.name}</div>
+    </div>
+  );
+}
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -140,8 +154,33 @@ export function SideBar(props: { className?: string }) {
     () => isIOS() && isMobileScreen,
     [isMobileScreen],
   );
-
+  const maskStore = useMaskStore();
+  const masks = maskStore.getAll();
+  const defaultMasksNames = (process.env.NEXT_PUBLIC_DEFAULT_MASKS || "").split(
+    ",",
+  );
+  const defaultPinedMask = masks.filter((m) =>
+    defaultMasksNames.includes(m.name),
+  );
+  const manualPinedMask = masks.filter((m) => m.pin);
+  // 根据元素的name，去重
+  const allPinedMask = [...defaultPinedMask, ...manualPinedMask].reduce(
+    (acc, cur) => {
+      if (!acc.find((m) => m.name === cur.name)) {
+        acc.push(cur);
+      }
+      return acc;
+    },
+    [] as Mask[],
+  );
   useHotKey();
+
+  const startChat = (mask?: Mask) => {
+    setTimeout(() => {
+      chatStore.newSession(mask);
+      navigate(Path.Chat);
+    }, 10);
+  };
 
   return (
     <div
@@ -187,7 +226,19 @@ export function SideBar(props: { className?: string }) {
           shadow
         />
       </div>
-
+      <div className={styles["sidebar-header-bar"]}>
+        <div className={styles["masks"]}>
+          <div className={styles["mask-row"]}>
+            {allPinedMask.map((mask, index) => (
+              <MaskItem
+                key={index}
+                mask={mask}
+                onClick={() => startChat(mask)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
       <div
         className={styles["sidebar-body"]}
         onClick={(e) => {
