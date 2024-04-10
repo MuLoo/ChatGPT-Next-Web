@@ -145,12 +145,13 @@ export const useAccessStore = createPersistStore(
     },
 
     isAccessCodeValid() {
-      console.log(
-        "isAccessCodeValid",
-        get().accessCode,
-        process.env.NEXT_PUBLIC_CODE,
-      );
-      return get().accessCode === process.env.NEXT_PUBLIC_CODE;
+      // console.log(
+      //   "isAccessCodeValid",
+      //   get().accessCode,
+      //   process.env.NEXT_PUBLIC_CODE,
+      // );
+      const pwdArr = process.env.NEXT_PUBLIC_CODE?.split(",");
+      return pwdArr?.includes(get().accessCode);
     },
 
     isAuthorized() {
