@@ -154,15 +154,27 @@ export function getHeaders() {
     Accept: "application/json",
   };
   const modelConfig = useChatStore.getState().currentSession().mask.modelConfig;
+  const isInCustomConfigList = accessStore.multipleCustomConfig.some(
+    (config) => config.customModels === modelConfig.model,
+  );
+
   const isGoogle = modelConfig.model.startsWith("gemini");
   const isAzure = accessStore.provider === ServiceProvider.Azure;
   const authHeader = isAzure ? "api-key" : "Authorization";
-  const apiKey = isGoogle
+  let apiKey = isGoogle
     ? accessStore.googleApiKey
     : isAzure
     ? accessStore.azureApiKey
     : accessStore.openaiApiKey;
   const clientConfig = getClientConfig();
+  if (isInCustomConfigList) {
+    const target = accessStore.multipleCustomConfig.find(
+      (config) => config.customModels === modelConfig.model,
+    )!;
+    const isAzure = target.provider === ServiceProvider.Azure;
+    const authHeader = isAzure ? "api-key" : "Authorization";
+    apiKey = isAzure ? target.azureApiKey : target.openaiApiKey;
+  }
   const makeBearer = (s: string) => `${isAzure ? "" : "Bearer "}${s.trim()}`;
   const validString = (x: string) => x && x.length > 0;
 

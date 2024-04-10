@@ -84,7 +84,6 @@ export function MaskConfig(props: {
 
   const updateConfig = (updater: (config: ModelConfig) => void) => {
     if (props.readonly) return;
-
     const config = { ...props.mask.modelConfig };
     updater(config);
     props.updateMask((mask) => {

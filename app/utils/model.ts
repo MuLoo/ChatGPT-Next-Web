@@ -34,7 +34,9 @@ export function collectModelTable(
 
       // enable or disable all models
       if (name === "all") {
-        Object.values(modelTable).forEach((model) => (model.available = available));
+        Object.values(modelTable).forEach(
+          (model) => (model.available = available),
+        );
       } else {
         modelTable[name] = {
           name,
@@ -56,6 +58,5 @@ export function collectModels(
 ) {
   const modelTable = collectModelTable(models, customModels);
   const allModels = Object.values(modelTable);
-
   return allModels;
 }

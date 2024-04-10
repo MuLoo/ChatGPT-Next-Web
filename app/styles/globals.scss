@@ -161,6 +161,10 @@ input[type="checkbox"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  &:disabled {
+    background: lightgrey;
+    cursor: not-allowed;
+  }
 }
 
 input[type="checkbox"]:checked::after {
