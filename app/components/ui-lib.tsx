@@ -13,7 +13,7 @@ import MinIcon from "../icons/min.svg";
 import Locale from "../locales";
 
 import { createRoot } from "react-dom/client";
-import React, { HTMLProps, useEffect, useState } from "react";
+import React, { HTMLProps, ReactNode, useEffect, useState } from "react";
 import { IconButton } from "./button";
 
 export function Popover(props: {
@@ -183,7 +183,7 @@ export function showModal(props: ModalProps) {
 }
 
 export type ToastProps = {
-  content: string;
+  content: string | ReactNode;
   action?: {
     text: string;
     onClick: () => void;
@@ -213,7 +213,7 @@ export function Toast(props: ToastProps) {
 }
 
 export function showToast(
-  content: string,
+  content: string | ReactNode,
   action?: ToastProps["action"],
   delay = 3000,
 ) {

@@ -52,9 +52,10 @@ export class ChatGPTApi implements LLMApi {
     // 拿到session后，就可以知道当前面具使用的是什么模型
     const model = session?.mask?.modelConfig?.model;
     // 是否是自定义配置组其中一项
-    const isInCustomConfigList = accessStore.multipleCustomConfig.some(
-      (config) => config.customModels === model,
-    );
+    const isInCustomConfigList = [
+      ...accessStore.multipleCustomConfig,
+      ...accessStore.defaultInitialConfig,
+    ].some((config) => config.customModels === model);
 
     // 不是自定义的，走历史逻辑
     if (!isInCustomConfigList) {
@@ -90,9 +91,10 @@ export class ChatGPTApi implements LLMApi {
 
       return [baseUrl, path].join("/");
     } else {
-      const target = accessStore.multipleCustomConfig.find(
-        (config) => config.customModels === model,
-      )!;
+      const target = [
+        ...accessStore.multipleCustomConfig,
+        ...accessStore.defaultInitialConfig,
+      ].find((config) => config.customModels === model)!;
       const isAzure = target.provider === ServiceProvider.Azure;
       if (isAzure && !accessStore.isValidAzureSpecific(target)) {
         throw Error(

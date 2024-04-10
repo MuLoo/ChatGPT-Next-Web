@@ -13,7 +13,7 @@ type SecondParam<T> = T extends (
 
 type MakeUpdater<T> = {
   lastUpdateTime: number;
-
+  initialize?: () => void;
   markUpdate: () => void;
   update: Updater<T>;
 };
@@ -31,7 +31,7 @@ export function createPersistStore<T extends object, M>(
   ) => M,
   persistOptions: SecondParam<typeof persist<T & M & MakeUpdater<T>>>,
 ) {
-  return create(
+  const store = create(
     persist(
       combine(
         {
@@ -61,4 +61,9 @@ export function createPersistStore<T extends object, M>(
       persistOptions as any,
     ),
   );
+  const temp = store.getState();
+  if (temp.initialize && typeof temp.initialize === "function") {
+    temp.initialize();
+  }
+  return store;
 }

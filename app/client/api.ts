@@ -154,9 +154,10 @@ export function getHeaders() {
     Accept: "application/json",
   };
   const modelConfig = useChatStore.getState().currentSession().mask.modelConfig;
-  const isInCustomConfigList = accessStore.multipleCustomConfig.some(
-    (config) => config.customModels === modelConfig.model,
-  );
+  const isInCustomConfigList = [
+    ...accessStore.multipleCustomConfig,
+    ...accessStore.defaultInitialConfig,
+  ].some((config) => config.customModels === modelConfig.model);
 
   const isGoogle = modelConfig.model.startsWith("gemini");
   const isAzure = accessStore.provider === ServiceProvider.Azure;
@@ -168,9 +169,10 @@ export function getHeaders() {
     : accessStore.openaiApiKey;
   const clientConfig = getClientConfig();
   if (isInCustomConfigList) {
-    const target = accessStore.multipleCustomConfig.find(
-      (config) => config.customModels === modelConfig.model,
-    )!;
+    const target = [
+      ...accessStore.multipleCustomConfig,
+      ...accessStore.defaultInitialConfig,
+    ].find((config) => config.customModels === modelConfig.model)!;
     const isAzure = target.provider === ServiceProvider.Azure;
     const authHeader = isAzure ? "api-key" : "Authorization";
     apiKey = isAzure ? target.azureApiKey : target.openaiApiKey;

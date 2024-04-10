@@ -8,8 +8,8 @@ services:
       - 3000:3000
     environment:
       - OPENAI_API_KEY=sk-test-123123-xxxx
-      - GOOGLE_API_KEY=
       - CODE=123123123
+      - GOOGLE_API_KEY=
       - BASE_URL=
       - OPENAI_ORG_ID=
       - HIDE_USER_API_KEY=
