@@ -100,6 +100,10 @@ export function MaskConfig(props: {
 
   const globalConfig = useAppConfig();
 
+  const isDefaultPinedMask = (process.env.NEXT_PUBLIC_DEFAULT_MASKS || "")
+    .split(",")
+    .includes(props.mask.name);
+
   return (
     <>
       <ContextPrompts
@@ -157,6 +161,20 @@ export function MaskConfig(props: {
             onChange={(e) => {
               props.updateMask((mask) => {
                 mask.hideContext = e.currentTarget.checked;
+              });
+            }}
+          ></input>
+        </ListItem>
+        <ListItem
+          title={"Pin到侧边"}
+          subTitle={"从侧边栏快速进入对话，勾选并存为面具后生效"}
+        >
+          <input
+            type="checkbox"
+            checked={props.mask.pin || isDefaultPinedMask}
+            onChange={(e) => {
+              props.updateMask((mask) => {
+                mask.pin = e.currentTarget.checked;
               });
             }}
           ></input>
