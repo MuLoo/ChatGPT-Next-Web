@@ -160,7 +160,7 @@ export function SideBar(props: { className?: string }) {
     ",",
   );
   const defaultPinedMask = masks.filter((m) =>
-    defaultMasksNames.includes(m.name),
+    defaultMasksNames.some((item) => item.includes(m.name)),
   );
   const manualPinedMask = masks.filter((m) => m.pin);
   // 根据元素的name，去重

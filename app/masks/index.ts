@@ -1,3 +1,4 @@
+import { ModelType } from "../store";
 import { Mask } from "../store/mask";
 import { CN_MASKS } from "./cn";
 import { EN_MASKS } from "./en";
@@ -22,5 +23,19 @@ export const BUILTIN_MASK_STORE = {
 };
 
 export const BUILTIN_MASKS: BuiltinMask[] = [...CN_MASKS, ...EN_MASKS].map(
-  (m) => BUILTIN_MASK_STORE.add(m),
+  (m) => {
+    // 如果是默认预设的面具和模型，则需要提前修改好
+    const { name, modelConfig } = m;
+    const defaultPinedMask = process.env.NEXT_PUBLIC_DEFAULT_MASKS?.split(",");
+    const target = defaultPinedMask?.find((item) => item.includes(name));
+    if (target) {
+      const [maskName, maskModel] = target?.split(":");
+      m.pin = true;
+      m.modelConfig = {
+        ...modelConfig,
+        model: (maskModel as ModelType) || modelConfig.model || "gpt-3.5-turbo",
+      };
+    }
+    return BUILTIN_MASK_STORE.add(m);
+  },
 );
