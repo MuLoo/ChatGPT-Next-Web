@@ -50,7 +50,7 @@ export class ChatGPTApi implements LLMApi {
     const chatStore = useChatStore.getState();
     const session = chatStore.currentSession();
     // 拿到session后，就可以知道当前面具使用的是什么模型
-    const model = session?.mask?.modelConfig?.model;
+    const { model, inheritApiUrl } = session?.mask?.modelConfig || {};
     // 是否是自定义配置组其中一项
     const isInCustomConfigList = [
       ...accessStore.multipleCustomConfig,
@@ -67,8 +67,10 @@ export class ChatGPTApi implements LLMApi {
         );
       }
 
-      let baseUrl = isAzure ? accessStore.azureUrl : accessStore.openaiUrl;
-
+      let baseUrl =
+        inheritApiUrl ??
+        (isAzure ? accessStore.azureUrl : accessStore.openaiUrl);
+      debugger;
       if (baseUrl.length === 0) {
         const isApp = !!getClientConfig()?.isApp;
         baseUrl = isApp

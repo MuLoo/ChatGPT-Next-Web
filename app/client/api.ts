@@ -154,6 +154,7 @@ export function getHeaders() {
     Accept: "application/json",
   };
   const modelConfig = useChatStore.getState().currentSession().mask.modelConfig;
+  const { inheritApikey } = modelConfig;
   const isInCustomConfigList = [
     ...accessStore.multipleCustomConfig,
     ...accessStore.defaultInitialConfig,
@@ -162,11 +163,13 @@ export function getHeaders() {
   const isGoogle = modelConfig.model.startsWith("gemini");
   const isAzure = accessStore.provider === ServiceProvider.Azure;
   const authHeader = isAzure ? "api-key" : "Authorization";
-  let apiKey = isGoogle
-    ? accessStore.googleApiKey
-    : isAzure
-    ? accessStore.azureApiKey
-    : accessStore.openaiApiKey;
+  let apiKey =
+    inheritApikey ??
+    (isGoogle
+      ? accessStore.googleApiKey
+      : isAzure
+      ? accessStore.azureApiKey
+      : accessStore.openaiApiKey);
   const clientConfig = getClientConfig();
   if (isInCustomConfigList) {
     const target = [

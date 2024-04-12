@@ -247,6 +247,8 @@ export const CN_MASKS: BuiltinMask[] = [
       },
     ],
     modelConfig: {
+      inheritApiUrl: "https://api.link-ai.chat",
+      inheritApikey: "Link_OI0ToV2tIEYE4PpOeBpPZFPvNePJVImV63JrQnX1JM-ew9Pf6U7",
       model: "gpt-3.5-turbo",
       temperature: 0.5,
       max_tokens: 2000,

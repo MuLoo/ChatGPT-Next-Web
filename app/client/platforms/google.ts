@@ -104,7 +104,7 @@ export class GeminiProApi implements LLMApi {
     };
 
     const accessStore = useAccessStore.getState();
-    let baseUrl = accessStore.googleUrl;
+    let baseUrl = modelConfig.inheritApiUrl ?? accessStore.googleUrl;
     // // google 的api 是特殊处理的
     // const chatStore = useChatStore.getState();
     // const session = chatStore.currentSession();
