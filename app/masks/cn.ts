@@ -48,7 +48,7 @@ export const CN_MASKS: BuiltinMask[] = [
   },
   {
     avatar: "1f638",
-    name: "文案写手",
+    name: "法律文案写手",
     context: [
       {
         id: "writer-0",

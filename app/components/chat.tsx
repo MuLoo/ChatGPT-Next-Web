@@ -583,7 +583,7 @@ export function EditMessageModal(props: { onClose: () => void }) {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
   const [messages, setMessages] = useState(session.messages.slice());
-
+  console.log("messages--------", messages);
   return (
     <div className="modal-mask">
       <Modal

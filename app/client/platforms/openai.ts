@@ -70,7 +70,6 @@ export class ChatGPTApi implements LLMApi {
       let baseUrl =
         inheritApiUrl ??
         (isAzure ? accessStore.azureUrl : accessStore.openaiUrl);
-      debugger;
       if (baseUrl.length === 0) {
         const isApp = !!getClientConfig()?.isApp;
         baseUrl = isApp
@@ -256,7 +255,15 @@ export class ChatGPTApi implements LLMApi {
               let extraInfo = await res.clone().text();
               try {
                 const resJson = await res.clone().json();
-                extraInfo = prettyObject(resJson);
+                // 如果response的content-type是application/json,并且特定字段存在内容， 那么这里需要找到真正的message
+                if (
+                  res.headers.get("content-type") === "application/json" &&
+                  resJson.choices[0]?.message?.content
+                ) {
+                  extraInfo = resJson.choices[0]?.message?.content;
+                } else {
+                  extraInfo = prettyObject(resJson);
+                }
               } catch {}
 
               if (res.status === 401) {
@@ -266,7 +273,6 @@ export class ChatGPTApi implements LLMApi {
               if (extraInfo) {
                 responseTexts.push(extraInfo);
               }
-
               responseText = responseTexts.join("\n\n");
 
               return finish();
