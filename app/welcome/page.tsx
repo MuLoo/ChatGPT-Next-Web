@@ -1,3 +1,5 @@
+import "@radix-ui/themes/styles.css";
+import "./custom_globals.scss";
 import {
   Button,
   Container,

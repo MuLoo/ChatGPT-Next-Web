@@ -2,7 +2,6 @@
 import "./styles/globals.scss";
 import "./styles/markdown.scss";
 import "./styles/highlight.scss";
-import "@radix-ui/themes/styles.css";
 import { getClientConfig } from "./config/client";
 import { type Metadata } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -41,7 +40,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest"></link>
         <script src="/serviceWorkerRegister.js" defer></script>
       </head>
-      <body id="next_body">
+      <body>
         <Theme>{children}</Theme>
         {serverConfig?.isVercel && (
           <>

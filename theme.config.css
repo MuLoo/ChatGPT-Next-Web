@@ -1,0 +1,12 @@
+.radix-themes {
+  &:where([data-is-root-theme='true'])
+  min-height: auto;
+}
+
+.radix-themes:where([data-is-root-theme='true']) {
+  min-height: auto;
+}
+
+.radix-themes {
+  min-height: auto;
+}
