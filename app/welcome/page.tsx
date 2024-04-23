@@ -46,9 +46,9 @@ const page = () => {
             <Text size="6" weight="bold" mb="4">
               使用AI, 打造属于你自己的智能助手
             </Text>
-            <Text size="3">人人都想八面玲珑</Text>
-            <Text size="3">则需要三头六臂的AI助手</Text>
-            <Text size="3">使用LawChat接入AI时代</Text>
+            <Text size="4">人人都想八面玲珑</Text>
+            <Text size="4">则需要三头六臂的AI助手</Text>
+            <Text size="4">使用LawChat接入AI时代</Text>
             <CustomDialog>
               <Button
                 variant="solid"

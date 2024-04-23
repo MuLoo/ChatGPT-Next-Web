@@ -3,6 +3,7 @@
 import { Dialog, Button, Flex, TextField, Text } from "@radix-ui/themes";
 import React, { PropsWithChildren } from "react";
 import { showToast } from "../../components/ui-lib";
+import Image from "next/image";
 
 const CustomDialog = ({ children }: PropsWithChildren) => {
   const phoneRef = React.useRef<HTMLInputElement>(null);
@@ -65,7 +66,17 @@ const CustomDialog = ({ children }: PropsWithChildren) => {
             <TextField.Root ref={emailRef} placeholder="输入您的邮箱" />
           </label>
         </Flex>
-
+        <Flex justify="start" align="center" gap="2" mt="6" direction="column">
+          <Flex
+            p="2"
+            style={{ border: "1px solid var(--violet-6)", borderRadius: 8 }}
+          >
+            <Image width={200} height={200} alt="微信咨询" src="/wechat.png" />
+          </Flex>
+          <Text size="2" color="gray">
+            微信咨询
+          </Text>
+        </Flex>
         <Flex gap="3" mt="4" justify="end">
           <Dialog.Close>
             <Button variant="soft" color="gray">
