@@ -8,6 +8,7 @@ import Image from "next/image";
 const CustomDialog = ({ children }: PropsWithChildren) => {
   const phoneRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
+  const companyRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
 
   const handleSubmit = async () => {
@@ -15,6 +16,7 @@ const CustomDialog = ({ children }: PropsWithChildren) => {
       if (!phoneRef.current || !emailRef.current) return;
       const phone = phoneRef.current.value;
       const email = emailRef.current.value;
+      const company = companyRef.current!.value || "";
       if (!phone || !email)
         return showToast("请填写手机号和邮箱", undefined, 3000);
       showToast("正在提交，请稍候", undefined, 1000);
@@ -23,7 +25,7 @@ const CustomDialog = ({ children }: PropsWithChildren) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ phone, email }),
+        body: JSON.stringify({ phone, email, company }),
       });
       const data = await res.json();
       if (data.msg === "ok") {
@@ -53,6 +55,12 @@ const CustomDialog = ({ children }: PropsWithChildren) => {
         </Dialog.Description>
 
         <Flex direction="column" gap="3">
+          <label>
+            <Text as="div" size="2" mb="1" weight="bold">
+              单位
+            </Text>
+            <TextField.Root ref={companyRef} placeholder="输入您的单位" />
+          </label>
           <label>
             <Text as="div" size="2" mb="1" weight="bold">
               手机号

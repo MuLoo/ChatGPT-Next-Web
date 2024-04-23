@@ -22,16 +22,16 @@ const page = () => {
       align="center"
       justify="between"
       style={{
-        height: 60,
+        height: 70,
         width: "100%",
-        borderBottom: "1px solid var(--violet-6)",
+        // borderBottom: "1px solid var(--violet-6)",
       }}
     >
-      <Text size="3" weight="bold">
-        Law-Chat 智能助手
+      <Text size="4" weight="bold">
+        LawChat 智能助手
       </Text>
       <CustomDialog>
-        <Text size="2" color="violet">
+        <Text size="2" weight="bold" color="violet">
           申请试用
         </Text>
       </CustomDialog>
@@ -41,8 +41,20 @@ const page = () => {
   const Content = () => (
     <Flex direction="column" gap="5">
       <Section style={{ borderBottom: "1px solid var(--violet-6)" }}>
-        <Flex style={{ width: "100%" }} p="9" mt="6" justify="between">
-          <Flex direction="column" align="center" justify="center" gap="4">
+        <Flex
+          style={{ width: "100%" }}
+          p="5"
+          mt="6"
+          justify="between"
+          align="center"
+        >
+          <Flex
+            direction="column"
+            align="center"
+            justify="center"
+            gap="4"
+            style={{ width: "50%", marginBottom: 50 }}
+          >
             <Text size="6" weight="bold" mb="4">
               使用AI, 打造属于你自己的智能助手
             </Text>
@@ -61,12 +73,7 @@ const page = () => {
               </Button>
             </CustomDialog>
           </Flex>
-          <Image
-            src="/first.gif"
-            alt="Law-Chat Logo"
-            width={600}
-            height={400}
-          />
+          <Image src="/first.gif" alt="LawChat Logo" width={600} height={400} />
         </Flex>
       </Section>
       <Section>
@@ -100,7 +107,7 @@ const page = () => {
             </Flex>
             <Image
               src="/second.gif"
-              alt="Law-Chat Logo"
+              alt="LawChat Logo"
               width={500}
               height={500}
             />
@@ -112,7 +119,7 @@ const page = () => {
           <Flex justify="between" px="9" py="5">
             <Image
               src="/third.gif"
-              alt="Law-Chat Logo"
+              alt="LawChat Logo"
               width={600}
               height={400}
             />
@@ -153,14 +160,14 @@ const page = () => {
                 文章太长不想看，可用机器人自动总结功能，可总结PDF、Word、Txt等多种类型。抓住文中重点，秒看万字长文。
               </Text>
             </Flex>
-            <Image src="/four.gif" alt="Law-Chat" width={500} height={460} />
+            <Image src="/four.gif" alt="LawChat" width={500} height={460} />
           </Flex>
         </Flex>
       </Section>
       <Section style={{ borderTop: "1px solid var(--violet-6)" }}>
         <Flex justify="center" align="center" gap="4" direction="column">
           <Heading size="6" mb="8">
-            对话Law-Chat助手，让知识成为你的翅膀
+            对话LawChat助手，让知识成为你的翅膀
           </Heading>
           <Flex direction="row" gap="8">
             <PriceItemFree />
