@@ -28,25 +28,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ msg: "非法手机号码格式" }, { status: 400 });
     }
     const { email, phone, company } = body;
-    // 将信息存储在本地文件csv中
-    const now = new Date();
-    const fileName = `${now.getFullYear()}-${
-      now.getMonth() + 1
-    }-${now.getUTCDate()}.csv`;
+    // 不在vercel环境时，将信息存储在本地文件csv中
+    if (!process.env.VERCEL) {
+      const now = new Date();
+      const fileName = `${now.getFullYear()}-${
+        now.getMonth() + 1
+      }-${now.getUTCDate()}.csv`;
 
-    const dirPath = path.join(process.cwd(), "public", "csv");
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true }); // 创建目录，如果目录不存在
+      const dirPath = path.join(process.cwd(), "public", "csv");
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true }); // 创建目录，如果目录不存在
+      }
+      const filePath = path.join(dirPath, fileName);
+      const ws = fs.createWriteStream(filePath, { flags: "a" });
+      ws.write("\ufeff", "utf8");
+      ws.once("open", function () {
+        console.log("CSV文件开始写入");
+      });
+      ws.once("close", () => console.log("CSV文件写入完成"));
+      ws.write(`单位:${company}, 邮箱:${email}, 手机:${phone}\r\n`);
+      ws.end();
     }
-    const filePath = path.join(dirPath, fileName);
-    const ws = fs.createWriteStream(filePath, { flags: "a" });
-    ws.write("\ufeff", "utf8");
-    ws.once("open", function () {
-      console.log("CSV文件开始写入");
-    });
-    ws.once("close", () => console.log("CSV文件写入完成"));
-    ws.write(`单位:${company}, 邮箱:${email}, 手机:${phone}\r\n`);
-    ws.end();
+
     const mailOptions = {
       from: process.env.NEXT_PUBLIC_EMAIL_SENDER,
       to: body.email,
