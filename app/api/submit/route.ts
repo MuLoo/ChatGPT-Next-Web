@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const mailOptions = {
       from: process.env.NEXT_PUBLIC_EMAIL_SENDER,
       to: body.email,
-      subject: "感谢您申请试用Law-Chat",
+      subject: "感谢您申请试用LawChat",
       text: `
       尊敬的用户, 您好：
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
       谢谢！
 
 
-      Law-Chat团队
+      LawChat团队
     `,
     };
     const info = await transporter.sendMail(mailOptions);
