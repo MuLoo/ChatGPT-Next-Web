@@ -35,6 +35,13 @@
 }
 
 @media (max-width: 768px) {
+  .header {
+    border-bottom: 1px solid var(--violet-6);
+    box-shadow: var(--shadow-2);
+    position: fixed;
+    background-color: #fff;
+    z-index: 3;
+  }
   .flexibleSection {
     flex-wrap: wrap;
     video,

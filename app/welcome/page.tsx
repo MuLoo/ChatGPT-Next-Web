@@ -20,6 +20,7 @@ import CustomDialog from "./_component/CustomDialog";
 const page = () => {
   const Header = () => (
     <Flex
+      className={styles.header}
       align="center"
       justify="between"
       px={{ initial: "3", md: "0" }}
@@ -43,6 +44,7 @@ const page = () => {
   const Content = () => (
     <Flex direction="column" gap="5">
       <Section
+        pt={{ initial: "9", md: "0" }}
         size={{ initial: "2", md: "3" }}
         style={{ borderBottom: "1px solid var(--violet-6)" }}
       >
