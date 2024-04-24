@@ -73,7 +73,7 @@ const page = () => {
               </Button>
             </CustomDialog>
           </Flex>
-          <Image src="/first.gif" alt="LawChat Logo" width={600} height={400} />
+          <Image src="/first.jpg" alt="LawChat Logo" width={600} height={342} />
         </Flex>
       </Section>
       <Section>
@@ -105,11 +105,13 @@ const page = () => {
                 根据案件情况结合法律条文和判例，推演本案件可能的裁判方向和适用的法律意见。
               </Text>
             </Flex>
-            <Image
-              src="/second.gif"
-              alt="LawChat Logo"
-              width={500}
-              height={500}
+            <video
+              autoPlay
+              muted
+              loop
+              src="/second.mp4"
+              width={600}
+              height={342}
             />
           </Flex>
         </Flex>
@@ -117,11 +119,13 @@ const page = () => {
       <Section>
         <Flex justify="center" align="center" gap="4" direction="column">
           <Flex justify="between" px="9" py="5">
-            <Image
-              src="/third.gif"
-              alt="LawChat Logo"
+            <video
+              autoPlay
+              muted
+              loop
+              src="/third.mp4"
               width={600}
-              height={400}
+              height={342}
             />
             <Flex
               direction="column"
@@ -160,7 +164,14 @@ const page = () => {
                 文章太长不想看，可用机器人自动总结功能，可总结PDF、Word、Txt等多种类型。抓住文中重点，秒看万字长文。
               </Text>
             </Flex>
-            <Image src="/four.gif" alt="LawChat" width={500} height={460} />
+            <video
+              src="/four.mp4"
+              autoPlay
+              muted
+              loop
+              width={547}
+              height={480}
+            />
           </Flex>
         </Flex>
       </Section>
