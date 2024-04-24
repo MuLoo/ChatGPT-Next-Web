@@ -26,6 +26,23 @@
 
 .welcome {
   :global(.rt-ContainerInner) {
-    max-width: 1200px;
+    max-width: 1400px;
+  }
+}
+
+.flexibleSection {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .flexibleSection {
+    flex-wrap: wrap;
+    video,
+    img {
+      width: 90%;
+    }
+  }
+  .reverseSection {
+    flex-wrap: wrap-reverse;
   }
 }

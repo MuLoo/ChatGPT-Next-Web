@@ -4,6 +4,7 @@ import {
   Button,
   Container,
   Flex,
+  Grid,
   Heading,
   Section,
   Separator,
@@ -21,6 +22,7 @@ const page = () => {
     <Flex
       align="center"
       justify="between"
+      px={{ initial: "3", md: "0" }}
       style={{
         height: 70,
         width: "100%",
@@ -40,22 +42,27 @@ const page = () => {
 
   const Content = () => (
     <Flex direction="column" gap="5">
-      <Section style={{ borderBottom: "1px solid var(--violet-6)" }}>
+      <Section
+        size={{ initial: "2", md: "3" }}
+        style={{ borderBottom: "1px solid var(--violet-6)" }}
+      >
         <Flex
-          style={{ width: "100%" }}
           p="5"
           mt="6"
-          justify="between"
-          align="center"
+          style={{
+            justifyContent: "space-around",
+          }}
+          className={styles.flexibleSection}
         >
           <Flex
             direction="column"
             align="center"
             justify="center"
             gap="4"
-            style={{ width: "50%", marginBottom: 50 }}
+            mb={{ initial: "4", sm: "8" }}
+            style={{ marginBottom: 50 }}
           >
-            <Text size="6" weight="bold" mb="4">
+            <Text size={{ initial: "5", md: "6" }} weight="bold" mb="4">
               使用AI, 打造属于你自己的智能助手
             </Text>
             <Text size="4">人人都想八面玲珑</Text>
@@ -73,10 +80,21 @@ const page = () => {
               </Button>
             </CustomDialog>
           </Flex>
-          <Image src="/first.jpg" alt="LawChat Logo" width={600} height={342} />
+          <Image
+            src="/first.jpg"
+            alt="LawChat Logo"
+            width={600}
+            height={342}
+            style={{
+              width: "90vw",
+              height: "51.4vw",
+              maxWidth: 600,
+              maxHeight: 342,
+            }}
+          />
         </Flex>
       </Section>
-      <Section>
+      <Section size={{ initial: "2", md: "3" }}>
         <Flex justify="center" align="center" gap="4" direction="column">
           <Heading
             size="6"
@@ -87,21 +105,43 @@ const page = () => {
           >
             你可以用LawChat做什么
           </Heading>
-          <Flex justify="between" px="9" py="5">
+          {/* <Flex justify="between" px="9" py="5"> */}
+          <Flex
+            className={styles.flexibleSection}
+            py="5"
+            px={{ initial: "4", md: "5", lg: "9" }}
+            justify="between"
+            gap={{ initial: "1", md: "9" }}
+          >
             <Flex
               direction="column"
               align="start"
               justify="center"
               gap="4"
-              style={{ width: "40%" }}
+              className={styles.flexibleSectionContent}
+              style={{
+                maxWidth: "420px",
+                width: "100%",
+              }}
+              mb={{ initial: "8", sm: "0" }}
             >
-              <Text size="5" weight="bold" mb="4">
+              <Text
+                size={{ initial: "4", md: "5" }}
+                weight={{ initial: "medium", md: "bold" }}
+                mb="4"
+              >
                 案例匹配，判例推演
               </Text>
-              <Text size="3">
+              <Text
+                size={{ initial: "3", md: "3" }}
+                weight={{ initial: "light", md: "regular" }}
+              >
                 根据描述的按键基本情况，在海量的案例库中匹配类似案件，找到判决依据和判决思维。
               </Text>
-              <Text size="3">
+              <Text
+                size={{ initial: "3", md: "3" }}
+                weight={{ initial: "light", md: "regular" }}
+              >
                 根据案件情况结合法律条文和判例，推演本案件可能的裁判方向和适用的法律意见。
               </Text>
             </Flex>
@@ -112,13 +152,29 @@ const page = () => {
               src="/second.mp4"
               width={600}
               height={342}
+              style={{
+                width: "90vw",
+                height: "51.4vw",
+                maxWidth: 600,
+                maxHeight: 342,
+              }}
             />
           </Flex>
         </Flex>
       </Section>
-      <Section>
-        <Flex justify="center" align="center" gap="4" direction="column">
-          <Flex justify="between" px="9" py="5">
+      <Section size={{ initial: "2", md: "3" }}>
+        <Flex justify="center" align="center" direction="column">
+          <Flex
+            px={{ initial: "4", md: "5", lg: "9" }}
+            py="5"
+            justify="between"
+            gap={{ initial: "1", md: "9" }}
+            className={`${styles.flexibleSection} ${styles.reverseSection}`}
+            // style={{
+            //   display: "flex",
+            //   flexDirection: "column-reverse",
+            // }}
+          >
             <video
               autoPlay
               muted
@@ -126,41 +182,78 @@ const page = () => {
               src="/third.mp4"
               width={600}
               height={342}
+              style={{
+                width: "90vw",
+                height: "51.4vw",
+                maxWidth: 600,
+                maxHeight: 342,
+              }}
             />
             <Flex
+              className={styles.reverseSectionContent}
               direction="column"
               align="start"
               justify="center"
               gap="4"
-              style={{ width: "35%" }}
+              style={{
+                maxWidth: "420px",
+              }}
+              mb={{ initial: "8", sm: "0" }}
             >
-              <Text size="5" weight="bold" mb="4">
+              <Text
+                size={{ initial: "4", md: "5" }}
+                weight={{ initial: "medium", md: "bold" }}
+                mb="4"
+              >
                 自动撰写，自定义合同模板
               </Text>
-              <Text size="3">
+              <Text
+                size={{ initial: "3", md: "3" }}
+                weight={{ initial: "light", md: "regular" }}
+              >
                 给出撰写命令，机器人将开始级自动撰写，如果还需要调用模板，加入合同的模板名称则开始指定撰写格式
               </Text>
-              <Text size="3">
+              <Text
+                size={{ initial: "3", md: "3" }}
+                weight={{ initial: "light", md: "regular" }}
+              >
                 不要你觉得，我要我觉得，LawChat实现完全自定义的文档模板合同模板，说出文档名称，实现多年积累一秒调用。
               </Text>
             </Flex>
           </Flex>
         </Flex>
       </Section>
-      <Section>
+      <Section size={{ initial: "2", md: "3" }}>
         <Flex justify="center" align="center" gap="4" direction="column">
-          <Flex justify="between" px="9" py="5">
+          <Flex
+            className={styles.flexibleSection}
+            justify="between"
+            px={{ initial: "4", md: "5", lg: "9" }}
+            py="5"
+            gap={{ initial: "1", md: "9" }}
+          >
             <Flex
               direction="column"
               align="start"
               justify="center"
               gap="4"
-              style={{ width: "40%" }}
+              className={styles.flexibleSectionContent}
+              style={{
+                maxWidth: "420px",
+              }}
+              mb={{ initial: "8", sm: "0" }}
             >
-              <Text size="5" weight="bold" mb="4">
+              <Text
+                size={{ initial: "4", md: "5" }}
+                weight={{ initial: "medium", md: "bold" }}
+                mb="4"
+              >
                 PDF、WORD、公众号总结
               </Text>
-              <Text size="3">
+              <Text
+                size={{ initial: "3", md: "3" }}
+                weight={{ initial: "light", md: "regular" }}
+              >
                 文章太长不想看，可用机器人自动总结功能，可总结PDF、Word、Txt等多种类型。抓住文中重点，秒看万字长文。
               </Text>
             </Flex>
@@ -171,19 +264,30 @@ const page = () => {
               loop
               width={547}
               height={480}
+              style={{
+                width: "90vw",
+                height: "78.9vw",
+                maxWidth: 547,
+                maxHeight: 480,
+              }}
             />
           </Flex>
         </Flex>
       </Section>
       <Section style={{ borderTop: "1px solid var(--violet-6)" }}>
         <Flex justify="center" align="center" gap="4" direction="column">
-          <Heading size="6" mb="8">
+          <Heading size={{ initial: "4", md: "6" }} mb="8">
             对话LawChat助手，让知识成为你的翅膀
           </Heading>
           <Flex direction="row" gap="8">
-            <PriceItemFree />
-            <PriceItemSmall />
-            <PriceItemEnterprise />
+            <Grid
+              columns={{ initial: "1", md: "3" }}
+              gap={{ initial: "4", md: "8" }}
+            >
+              <PriceItemFree />
+              <PriceItemSmall />
+              <PriceItemEnterprise />
+            </Grid>
           </Flex>
         </Flex>
       </Section>
@@ -199,7 +303,7 @@ const page = () => {
       gap="6"
       p="5"
       style={{
-        width: 280,
+        width: 300,
         border: "1px solid var(--violet-3)",
         borderRadius: 10,
         boxShadow: "var(--shadow-3)",
@@ -356,7 +460,7 @@ const page = () => {
       gap="6"
       p="5"
       style={{
-        width: 280,
+        width: 300,
         border: "1px solid var(--bronze-3)",
         borderRadius: 10,
         boxShadow: "var(--shadow-3)",
@@ -513,7 +617,7 @@ const page = () => {
       gap="6"
       p="5"
       style={{
-        width: 280,
+        width: 300,
         border: "1px solid var(--bronze-3)",
         borderRadius: 10,
         boxShadow: "var(--shadow-3)",
@@ -680,12 +784,13 @@ const page = () => {
     <Container
       className={styles.welcome}
       size="4"
+      py="0"
+      px={{ sm: "3", md: "5", lg: "9" }}
       style={{
         minHeight: "100vh",
         height: "100%",
         overflow: "scroll",
         width: "100vw",
-        padding: "0 var(--space-9)",
       }}
     >
       <Header />
