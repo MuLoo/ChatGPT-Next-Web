@@ -112,7 +112,7 @@ const page = () => {
             className={styles.flexibleSection}
             py="5"
             px={{ initial: "4", md: "5", lg: "9" }}
-            justify="between"
+            justify="center"
             gap={{ initial: "1", md: "9" }}
           >
             <Flex
@@ -169,7 +169,7 @@ const page = () => {
           <Flex
             px={{ initial: "4", md: "5", lg: "9" }}
             py="5"
-            justify="between"
+            justify="center"
             gap={{ initial: "1", md: "9" }}
             className={`${styles.flexibleSection} ${styles.reverseSection}`}
             // style={{
@@ -229,7 +229,7 @@ const page = () => {
         <Flex justify="center" align="center" gap="4" direction="column">
           <Flex
             className={styles.flexibleSection}
-            justify="between"
+            justify="center"
             px={{ initial: "4", md: "5", lg: "9" }}
             py="5"
             gap={{ initial: "1", md: "9" }}
