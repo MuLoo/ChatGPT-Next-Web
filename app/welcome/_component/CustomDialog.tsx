@@ -50,7 +50,7 @@ const CustomDialog = ({ children }: PropsWithChildren) => {
 
       <Dialog.Content maxWidth="450px">
         <Dialog.Title>立即申请</Dialog.Title>
-        <Dialog.Description size="2" mb="4">
+        {/* <Dialog.Description size="2" mb="4">
           请填写必要信息以便我们能与您取得联系
         </Dialog.Description>
 
@@ -73,7 +73,7 @@ const CustomDialog = ({ children }: PropsWithChildren) => {
             </Text>
             <TextField.Root ref={emailRef} placeholder="输入您的邮箱" />
           </label>
-        </Flex>
+        </Flex> */}
         <Flex justify="start" align="center" gap="2" mt="6" direction="column">
           <Flex
             p="2"
@@ -85,18 +85,16 @@ const CustomDialog = ({ children }: PropsWithChildren) => {
             微信咨询
           </Text>
         </Flex>
-        <Flex gap="3" mt="4" justify="end">
+        {/* <Flex gap="3" mt="4" justify="end">
           <Dialog.Close>
             <Button variant="soft" color="gray">
               取消
             </Button>
           </Dialog.Close>
-          {/* <Dialog.Close> */}
           <Button color="violet" onClick={handleSubmit}>
             申请
           </Button>
-          {/* </Dialog.Close> */}
-        </Flex>
+        </Flex> */}
       </Dialog.Content>
     </Dialog.Root>
   );

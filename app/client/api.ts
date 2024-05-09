@@ -164,7 +164,7 @@ export function getHeaders() {
   const isAzure = accessStore.provider === ServiceProvider.Azure;
   const authHeader = isAzure ? "api-key" : "Authorization";
   let apiKey =
-    inheritApikey ??
+    inheritApikey ||
     (isGoogle
       ? accessStore.googleApiKey
       : isAzure

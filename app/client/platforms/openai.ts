@@ -68,8 +68,9 @@ export class ChatGPTApi implements LLMApi {
       }
 
       let baseUrl =
-        inheritApiUrl ??
+        inheritApiUrl ||
         (isAzure ? accessStore.azureUrl : accessStore.openaiUrl);
+      debugger;
       if (baseUrl.length === 0) {
         const isApp = !!getClientConfig()?.isApp;
         baseUrl = isApp
