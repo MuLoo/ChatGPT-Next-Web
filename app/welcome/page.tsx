@@ -17,22 +17,34 @@ import styles from "./page.module.scss";
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import CustomDialog from "./_component/CustomDialog";
 
+const Logo = () => (
+  <Image
+    src="/favicon-32x32.jpg"
+    alt="Logo"
+    width="32"
+    height="32"
+    style={{ marginRight: "8px" }}
+  />
+);
+
 const page = () => {
   const Header = () => (
     <Flex
       className={styles.header}
       align="center"
       justify="between"
-      px={{ initial: "3", md: "0" }}
+      px={{ initial: "3", md: "6" }}
       style={{
         height: 70,
         width: "100%",
-        // borderBottom: "1px solid var(--violet-6)",
       }}
     >
-      <Text size="4" weight="bold">
-        LawChat 智能助手
-      </Text>
+      <Flex justify="center" align="center" gap="2">
+        <Logo />
+        <Text size="4" weight="bold">
+          LawChat 智能助手
+        </Text>
+      </Flex>
       <CustomDialog>
         <Text size="2" weight="bold" color="violet">
           申请试用
