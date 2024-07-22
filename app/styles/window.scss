@@ -34,3 +34,14 @@
 .window-action-button:not(:first-child) {
   margin-left: 10px;
 }
+
+@media only screen and (max-width: 600px) {
+  .window-header {
+    position: fixed;
+    top: 0;
+    z-index: 9;
+    width: fit-content;
+    background: #fff;
+    width: calc(100vw - 40px);
+  }
+}
